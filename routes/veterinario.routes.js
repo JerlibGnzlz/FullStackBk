@@ -8,6 +8,9 @@ import {
 
 const router = Router();
 
+
+// ─── Routes ──────────────────────────────────────────────────────────────────
+
 router.post("/", registrar);
 
 router.get("/perfil", perfil);

@@ -1,5 +1,5 @@
 import { VeterinarioModel } from "../models/VeterinarioModel.js";
-import { encrypt } from "../utils/hash.Utils.js";
+import { encrypt, comparar } from "../utils/hash.Utils.js";
 
 const registrar = async (req, res) => {
 
@@ -60,7 +60,34 @@ const confirmar = async (req, res) => {
 };
 
 const autenticar = async (req, res) => {
-    res.json({ msg: "Atutenticando.." });
+    const { email, password } = req.body;
+
+    const existeUsuario = await VeterinarioModel.findOne({ email });
+    try {
+        if (!existeUsuario) {
+            const error = new Error("El Usuario no existe ");
+            return res.status(404).json({ msg: error.message });
+        }
+
+        if (!existeUsuario.confirmado) {
+            const error = new Error("Tu cuenta no ha sido confirmada ");
+            return res.status(403).json({ msg: error.message });
+        }
+
+        const passwordHashado = existeUsuario.password;
+
+        const compararPassword = await comparar(password, passwordHashado);
+        if (!compararPassword) {
+            const error = new Error("Password incorrecto");
+
+            return res.status(403).json({ msg: error.message });
+        } else {
+            res.json({ msg: "Password Correctamente" });
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export {
