@@ -11,6 +11,7 @@ const VeterinarioSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
+
         },
         email: {
             type: String,
@@ -29,7 +30,8 @@ const VeterinarioSchema = new mongoose.Schema(
         },
         token: {
             type: String,
-            default: Date.now()
+            default: Date.now(),
+
 
         },
         confirmado: {

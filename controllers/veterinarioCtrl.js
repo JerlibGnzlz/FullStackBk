@@ -1,5 +1,7 @@
+import { generarJWT } from "../helpers/generarJWT.js";
 import { VeterinarioModel } from "../models/VeterinarioModel.js";
-import { encrypt, comparar } from "../utils/hash.Utils.js";
+import { encrypt, comparar } from "../helpers/hash.js";
+
 
 const registrar = async (req, res) => {
 
@@ -11,7 +13,6 @@ const registrar = async (req, res) => {
         const error = new Error("Usuario ya registrado");
         return res.status(400).json({ msg: error.message });
     }
-
 
     try {
         const passwordHashado = await encrypt(password);
@@ -28,8 +29,9 @@ const registrar = async (req, res) => {
 const perfil = async (req, res) => {
 
     try {
-        const veterinarios = await VeterinarioModel.find({});
-        res.json({ msg: "Todos los usuarios", veterinarios });
+        console.log(req.veterinario);
+        const { veterinario } = req;
+        res.json({ perfil: veterinario });
     } catch (error) {
         console.log(error);
     }
@@ -75,10 +77,19 @@ const autenticar = async (req, res) => {
         }
 
         const passwordHashado = existeUsuario.password;
+        const data = {
+            usuario: existeUsuario
+        };
+
+        res.json({ token: generarJWT(existeUsuario.id), data });
+
+
+        // console.log(existeUsuario);
 
         const compararPassword = await comparar(password, passwordHashado);
         if (!compararPassword) {
             const error = new Error("Password incorrecto");
+
 
             return res.status(403).json({ msg: error.message });
         } else {

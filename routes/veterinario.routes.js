@@ -5,6 +5,8 @@ import {
     confirmar,
     autenticar
 } from "../controllers/veterinarioCtrl.js";
+import { checkAuth } from "../middlewares/authMiddleware.js";
+
 
 const router = Router();
 
@@ -13,11 +15,10 @@ const router = Router();
 
 router.post("/", registrar);
 
-router.get("/perfil", perfil);
-
 router.get("/confirmar/:token", confirmar);
 
-router.get("/login", autenticar);
+router.post("/login", autenticar);
 
+router.get("/perfil", checkAuth, perfil);
 
 export default router;
