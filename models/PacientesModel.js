@@ -15,11 +15,12 @@ const pacienteSchema = new mongoose.Schema({
     },
     fecha: {
         type: Date,
-        require: true
+        require: true,
+        default: Date.now()
     },
     sintomas: {
         type: String,
-        require: true
+        require: true,
     },
     veterinario: {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,4 +35,4 @@ const pacienteSchema = new mongoose.Schema({
 
 
 
-export const pacienteModel = new mongoose.model("Pacientes", pacienteSchema);
+export const PacienteModel = mongoose.model("Pacientes", pacienteSchema);
