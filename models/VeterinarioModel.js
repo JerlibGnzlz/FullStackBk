@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { generarId } from "../helpers/generarID.js";
+
 // import bcrypt from "bcrypt";
 
 const VeterinarioSchema = new mongoose.Schema(
@@ -30,7 +32,7 @@ const VeterinarioSchema = new mongoose.Schema(
         },
         token: {
             type: String,
-            default: Date.now(),
+            default: generarId()
 
 
         },
