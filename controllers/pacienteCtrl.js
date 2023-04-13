@@ -28,3 +28,33 @@ export const ObtenerPacientes = async (req, res) => {
     res.json(pacientes);
 
 };
+
+
+
+export const ObtenerPaciente = async (req, res) => {
+
+    const { id } = req.params;
+    const paciente = await PacienteModel.findById(id);
+
+    //Cuando se comparan dos objetId se les coloca toString()
+    if (paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
+        return res.json({ msg: "Accion no valida" });
+    }
+    if (paciente) {
+        res.json(paciente);
+
+    }
+
+};
+
+
+export const actualizarPaciente = async (req, res) => {
+
+
+};
+
+export const eliminarPaciente = async (req, res) => {
+
+
+
+};

@@ -47,7 +47,7 @@ const confirmar = async (req, res) => {
 
     try {
         const usuarioConfirmar = await VeterinarioModel.findOne({ token });
-        console.log(usuarioConfirmar);
+
 
         if (!usuarioConfirmar) {
             const error = new Error("Token no valido");
