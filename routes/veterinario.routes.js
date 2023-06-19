@@ -3,18 +3,36 @@ import {
     registrar,
     perfil,
     confirmar,
-    autenticar
+    autenticar,
+    olvidePassword,
+    comprobarToken,
+    nuevoPassword
 } from "../controllers/veterinarioCtrl.js";
+import { checkAuth } from "../middlewares/authMiddleware.js";
+
 
 const router = Router();
 
+
+// ─── Routes ──────────────────────────────────────────────────────────────────
+
+
+/**
+ * Area publica
+ */
 router.post("/", registrar);
-
-router.get("/perfil", perfil);
-
 router.get("/confirmar/:token", confirmar);
+router.post("/login", autenticar);
+router.post("/olvidePassword", olvidePassword);
+router.get("/olvidePassword/:token", comprobarToken);
+router.post("/olvidePassword/:token", nuevoPassword);
 
-router.get("/login", autenticar);
 
+
+
+/**
+ * Area privada
+ */
+router.get("/perfil", checkAuth, perfil);
 
 export default router;
