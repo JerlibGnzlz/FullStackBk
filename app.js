@@ -2,9 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import veterinarioRoutes from "./routes/veterinario.routes.js";
 import pacienteRoutes from "./routes/paciente.routes.js";
-
+import cors from "cors";
 
 const app = express();
+app.use(cors("http://localhost:5173"));
 
 import { connectDb } from "./config/db.js";
 
