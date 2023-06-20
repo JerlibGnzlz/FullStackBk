@@ -2,6 +2,8 @@ import { generarJWT } from "../helpers/generarJWT.js";
 import { VeterinarioModel } from "../models/VeterinarioModel.js";
 import { encrypt, comparar } from "../helpers/hash.js";
 import { generarId } from "../helpers/generarID.js";
+import { emailRegistro } from "../helpers/emailRegistro.js";
+import { emailOlvidePassword } from "../helpers/emailOlvidePassword.js";
 
 
 
@@ -22,6 +24,17 @@ const registrar = async (req, res) => {
 
         const veterinario = new VeterinarioModel({ nombre, email, password: passwordHashado });
         const veterinario_Guardado = await veterinario.save();
+
+        // ─── Enviar el email─────────────────────────────────────────────────────────────────
+
+        emailRegistro({
+            email,
+            nombre,
+            token: veterinario.token
+        });
+
+
+
         res.json({ msg: "Usuario registrado con exito", veterinario_Guardado });
 
     } catch (error) {
@@ -119,6 +132,15 @@ const olvidePassword = async (req, res) => {
         existeVeterinario.token = generarId();
         await VeterinarioModel.create(existeVeterinario);
         // await existeVeterinario.save();
+
+
+        //enviar email con instrucciones 
+        emailOlvidePassword({
+            email,
+            nombre: existeVeterinario.nombre,
+            token: existeVeterinario.token
+        });
+
         res.json({ msg: "Hemos enviado un mail con las instrucciones" });
 
     } catch (error) {
